@@ -3,13 +3,13 @@ package project.mybox.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import project.mybox.domain.User;
+import project.mybox.dto.UserDto;
 import project.mybox.service.UserService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -21,12 +21,15 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/userRegForm")
-    public ResponseEntity<?> userRegForm(@RequestParam String userId, @RequestParam String password ){
-        Map<String, Object> s= new HashMap<>();
-        System.out.println("===============  "  +userId);
-        userService.userRegForm( userId, password );
-        s.put("rnqhsgur" , "lratnwjd");
-        return new ResponseEntity<>(s, HttpStatus.OK);
+    public ResponseEntity<?> userRegForm(@RequestParam String userId, @RequestParam String password){
+        Map<String, Object> pMap= userService.userRegForm( userId, password );
+        return new ResponseEntity<>(pMap, HttpStatus.OK);
+    }
+
+    @GetMapping("/getUserInfo")
+    public ResponseEntity<?> getUserInfo(@RequestParam String userId){
+        Map<String, Object> pMap = userService.getUserInfo( userId );
+        return new ResponseEntity<>(pMap ,HttpStatus.OK);
     }
 
 }

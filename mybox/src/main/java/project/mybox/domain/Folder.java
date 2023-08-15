@@ -29,11 +29,11 @@ public class Folder {
     private User user;
 
     @Builder
-    public Folder(Long folderId, String folderName, Long parentId, LocalDateTime regDttm){
+    public Folder(Long folderId, String folderName, Long parentId, LocalDateTime regDttm, User user){
         this.folderId = folderId;
         this.folderName = folderName;
         this.parentId = parentId;
         this.regDttm = regDttm;
-        this.user = new User();
+        this.user = user;
     }
 }
