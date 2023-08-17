@@ -25,4 +25,17 @@ public class FolderController {
         return new ResponseEntity<>(pMap, HttpStatus.OK);
     }
 
+    @GetMapping("/getFolderList")
+    public ResponseEntity<?> getFolderList(HttpServletRequest request){
+        Map<String, Object> pMap = folderService.getFolderList(request);
+
+        return new ResponseEntity<>(pMap, HttpStatus.OK);
+    }
+
+    @GetMapping("/folderRemove")
+    public ResponseEntity<?> folderRemove(HttpServletRequest request, @ModelAttribute FolderDto folderDto){
+        Map<String, Object> pMap = folderService.folderRemove( request, folderDto );
+        return new ResponseEntity<>(pMap, HttpStatus.OK);
+    }
+
 }

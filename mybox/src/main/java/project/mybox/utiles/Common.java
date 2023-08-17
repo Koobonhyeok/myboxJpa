@@ -1,7 +1,10 @@
 package project.mybox.utiles;
 
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 
+@Service
 public class Common {
 
     public boolean validation( String path, String uploadFileNm ){

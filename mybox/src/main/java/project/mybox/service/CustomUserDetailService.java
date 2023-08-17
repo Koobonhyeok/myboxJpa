@@ -48,7 +48,7 @@ public class CustomUserDetailService implements UserDetailsService {
             User user = User.builder()
                     .userId(userDto.getUserId())
                     .password(userDto.getPassword())
-                    .storage(0)
+                    .storage(0L)
                     .roles(userDto.getRoles())
                     .regDttm(LocalDateTime.now())
                     .build();

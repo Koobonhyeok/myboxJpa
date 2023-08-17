@@ -29,7 +29,7 @@ public class UserService {
                 User user = User.builder()
                         .userId( userId )
                         .password( password )
-                        .storage(0)
+                        .storage(0L)
                         .regDttm( LocalDateTime.now() )
                         .build();
 

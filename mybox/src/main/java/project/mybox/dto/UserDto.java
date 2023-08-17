@@ -30,14 +30,14 @@ public class UserDto implements UserDetails {
 
     private String password;
 
-    private int storage;
+    private Long storage;
 
     private String roles;
 
     private LocalDateTime regDttm;
 
     @Builder
-    public UserDto(Long userNo, String userId, String password, int storage, String roles){
+    public UserDto(Long userNo, String userId, String password, Long storage, String roles){
         this.userNo = userNo;
         this.userId = userId;
         this.password = password;

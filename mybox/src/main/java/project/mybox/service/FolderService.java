@@ -17,10 +17,7 @@ import project.mybox.utiles.Common;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.time.LocalDateTime;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +42,7 @@ public class FolderService {
 
             System.out.println("path ::::::    "   + path);
             if( common.validation(path, folderDto.getFolderName()) ){
-                File file = new File(path+folderDto.getFolderName());
+                File file = new File(path+"/"+folderDto.getFolderName());
                 file.mkdir();
                 List<User> list = userRepository.findById(userId);
                 folderDto.setUser(list.get(0));
@@ -71,6 +68,48 @@ public class FolderService {
             pMap.put("message", "folder mkdir fail");
             e.printStackTrace();
         }
+        return pMap;
+    }
+
+    public Map<String, Object> getFolderList(HttpServletRequest request){
+        Map<String, Object> pMap = new HashMap<>();
+        try {
+            String userId = jwtTokenProvider.getTokenUserId(request);
+            String path = "/MyBox/"+userId+"/"+request.getHeader("path");
+
+            File file = new File(path);
+            if( file.exists() ){
+                List<String> fileList = new ArrayList<>();
+                for( String name : file.list() ){
+                    fileList.add(name);
+                }
+                pMap.put("data", fileList);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return pMap;
+    }
+
+    @Transactional
+    public Map<String, Object> folderRemove( HttpServletRequest request, FolderDto folderDto){
+        Map<String, Object> pMap = new HashMap<>();
+        try{
+            String userId = jwtTokenProvider.getTokenUserId(request);
+            String path = "/MyBox/"+userId+"/"+request.getHeader("path")+"/"+folderDto.getFolderName();
+            File file = new File(path);
+            if( file.exists() ){
+                if(file.delete()){
+
+                    folderRepository.folderRemove(folderDto.getFolderId());
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return pMap;
     }
 
