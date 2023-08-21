@@ -28,4 +28,19 @@ public class UserRepository {
     public void userRegForm(User user){
         em.persist(user);
     }
+
+    public int userStorageUpdate(String userId, Long fileSize){
+        User user = em.createQuery("select m from User m where user_id = :userId", User.class)
+                .setParameter("userId", userId)
+                .getSingleResult();
+        // 여기다 size 체크하는게 맞나??
+        Long maxStorage = 32212254720L;
+
+        if( maxStorage > ( user.getStorage()+fileSize ) ){
+            user.setStorage(user.getStorage() + fileSize );
+            return 1;
+        }
+
+        return -1;
+    }
 }

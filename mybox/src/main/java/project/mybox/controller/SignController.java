@@ -75,9 +75,4 @@ public class SignController {
         }
     }
 
-    @GetMapping("/test")
-    public void test(){
-        System.out.println("여기도 확인하자");
-    }
-
 }

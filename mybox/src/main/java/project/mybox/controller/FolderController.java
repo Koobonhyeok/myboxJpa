@@ -20,7 +20,6 @@ public class FolderController {
 
     @PostMapping("/folderRegForm")
     public ResponseEntity<?> folderRegForm(HttpServletRequest request, @ModelAttribute FolderDto folderDto){
-        System.out.println("folderDTO     ::   " + folderDto.toString());
         Map<String, Object> pMap = folderService.folderRegForm(request, folderDto);
         return new ResponseEntity<>(pMap, HttpStatus.OK);
     }
