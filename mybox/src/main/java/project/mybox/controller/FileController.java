@@ -1,5 +1,6 @@
 package project.mybox.controller;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,12 @@ public class FileController {
     public ResponseEntity<?> fileRegForm(@RequestPart(value = "file", required = false) MultipartFile multipartFile,
                                          HttpServletRequest request){
         Map<String, Object> pMap = fileService.fileRegForm(multipartFile, request);
+        return new ResponseEntity<>(pMap, HttpStatus.OK);
+    }
+
+    @GetMapping("/fileRemove")
+    public ResponseEntity<?> fileRemove( @ModelAttribute FileDto fileDto, HttpServletRequest request ){
+        Map<String, Object> pMap = fileService.fileRemove( fileDto, request );
         return new ResponseEntity<>(pMap, HttpStatus.OK);
     }
 

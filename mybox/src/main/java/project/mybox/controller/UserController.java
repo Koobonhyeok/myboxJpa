@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import project.mybox.domain.Folder;
 import project.mybox.domain.User;
 import project.mybox.dto.UserDto;
 import project.mybox.service.UserService;
@@ -33,14 +34,6 @@ public class UserController {
     public ResponseEntity<?> getUserInfo(@RequestParam String userId){
         Map<String, Object> pMap = userService.getUserInfo( userId );
         return new ResponseEntity<>(pMap ,HttpStatus.OK);
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<?> test(HttpServletRequest request, HttpServletResponse response){
-        Map<String, Object> pMap = new HashMap<>();
-        System.out.println("testsssssssssssssss:::::::::::::::::::::::::::::::::::::::::::::::::::::");
-        pMap = userService.test( request, response );
-        return new ResponseEntity<>(pMap, HttpStatus.OK);
     }
 
 }

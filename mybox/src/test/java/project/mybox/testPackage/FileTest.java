@@ -7,6 +7,9 @@ import project.mybox.domain.Folder;
 import project.mybox.repository.FileRepository;
 import project.mybox.repository.FolderRepository;
 import project.mybox.repository.UserRepository;
+import project.mybox.utiles.Common;
+
+import javax.persistence.NoResultException;
 
 @SpringBootTest
 public class FileTest {
@@ -17,15 +20,12 @@ public class FileTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private Common common;
+
     @Test
     public void folderFind(){
-        Folder folder = folderRepository.findFolder("3");
-
-        System.out.println(folder.toString());
+        System.out.println( common.validation( "C:\\MyBox\\koo2519\\0\\rnqhsgur", "rnqhsgu1r" ) );
     }
 
-    @Test
-    public void folderUpdate(){
-//        userRepository.userStorageUpdate("koo2519");
-    }
 }

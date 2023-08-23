@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+//@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 기본생성자 생성

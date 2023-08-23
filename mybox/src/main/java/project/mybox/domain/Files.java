@@ -1,11 +1,13 @@
 package project.mybox.domain;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
+//@Entity
+@Getter
 @Table(name = "file")
 public class Files {
 

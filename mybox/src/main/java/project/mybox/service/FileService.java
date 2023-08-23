@@ -7,14 +7,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.mybox.domain.Files;
 import project.mybox.domain.Folder;
+import project.mybox.dto.FileDto;
 import project.mybox.repository.FileRepository;
 import project.mybox.repository.UserRepository;
+//import project.mybox.security.JwtTokenProvider;
 import project.mybox.security.JwtTokenProvider;
 import project.mybox.utiles.Common;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -81,35 +85,76 @@ public class FileService {
         return  pMap;
     }
 
-    public Map<String, Object> fileDownload(HttpServletRequest request, HttpServletResponse response){
+    public Map<String, Object> fileRemove(FileDto fileDto, HttpServletRequest request){
         Map<String, Object> pMap = new HashMap<>();
-        try {
-            String dir = "";
-            String fileName = "";
-            String path = dir + fileName;
+        try{
+            String userId = jwtTokenProvider.getTokenUserId(request);
+            String path = "C:/MyBox/"+userId+request.getHeader("path");
 
-            File file = new File(path);
-            FileInputStream in = new FileInputStream(path);
 
-            fileName = new String(fileName.getBytes("UTF-8"), "8859_1");
+            File file = new File( path + File.separator + fileDto.getFileName() );
+            // 파일 존재 여부 확인
+            if( file.exists() ){
 
-            response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-            OutputStream os = response.getOutputStream();
+                Long fileStorage = fileRepository.fileRemove( fileDto.getFileNo() );
 
-            int length;
-            byte[] b = new byte[(int) file.length()];
-            while (( length = in.read(b) ) > 0){
-                os.write(b, 0, length);
+
+                // 파일 삭제
+                file.delete();
+
             }
-
-            os.flush();
-            os.close();
-
-            in.close();
-
         }catch (Exception e){
             e.printStackTrace();
+        }
+
+        return pMap;
+    }
+
+    public Map<String, Object> fileDownload(HttpServletRequest request, HttpServletResponse response){
+        Map<String, Object> pMap = new HashMap<>();
+        try{
+            String userId = jwtTokenProvider.getTokenUserId(request);
+
+            String downloadFile = request.getParameter("fileName");
+            String uploadDir = "C:/MyBox/"+userId+request.getHeader("path");
+            String path = uploadDir+File.separator+downloadFile;
+
+            System.out.println("Path Confirm    ::     " +  path);
+
+            File file = new File(path);
+            String userAgent = request.getHeader("User-Agent");
+            boolean ie = userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("rv:11") > -1;
+            String fileName = null;
+
+            if(ie){
+                fileName = URLEncoder.encode(file.getName(), "utf-8");
+            }else {
+                fileName = new String( file.getName().getBytes("utf-8"), "iso-8859-1");
+            }
+
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=\""+fileName+"\"");
+
+            FileInputStream fis = new FileInputStream(file);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            ServletOutputStream so = response.getOutputStream();
+            BufferedOutputStream bos = new BufferedOutputStream(so);
+
+            byte[] data = new byte[2048];
+            int input = 0;
+            while ( (input = bis.read(data)) != -1 ){
+                bos.write(data, 0, input);
+                bos.flush();
+            }
+
+            if(bos!=null) bos.close();
+            if(bis!=null) bis.close();
+            if(so!=null) so.close();
+            if(fis!=null) fis.close();
+
+            pMap.put("status", "Success");
+        }catch (IOException ioException){
+            ioException.printStackTrace();
         }
         return pMap;
     }
