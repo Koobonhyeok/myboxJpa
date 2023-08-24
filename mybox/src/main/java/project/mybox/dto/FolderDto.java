@@ -19,8 +19,22 @@ public class FolderDto {
     private String folderName;
     private Long parentId;
     private List<FolderDto> childFolders;
+    private List<FileDto> childFiles;
 
     private String path;
+
+    public static FolderDto of(Folder folder) {
+        return FolderDto.builder()
+                .folderId(folder.getFolderId())
+                .folderName(folder.getFolderName())
+                .childFolders(folder.getChildrenFolders().stream()
+                        .map(FolderDto::of)
+                        .collect(Collectors.toList()))
+                .childFiles(folder.getChildrenFiles().stream()
+                        .map(FileDto::new)
+                        .collect(Collectors.toList()))
+                .build();
+    }
 
 //    private LocalDateTime regDttm;
 //    private User user;
@@ -34,15 +48,5 @@ public class FolderDto {
 //        this.regDttm = regDttm;
 //        this.user = user;
 //    }
-
-    public static FolderDto of(Folder folder) {
-        return FolderDto.builder()
-                .folderId(folder.getFolderId())
-                .folderName(folder.getFolderName())
-                .childFolders(folder.getChildrenFolders().stream()
-                        .map(FolderDto::of)
-                        .collect(Collectors.toList()))
-                .build();
-    }
 
 }

@@ -34,6 +34,9 @@ public class Folder {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Folder> childrenFolders = new HashSet<>();
 
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Files> childrenFiles = new HashSet<>();
+
     @Builder
     public Folder(Long folderId, String folderName, Folder parent){
         this.folderId = folderId;

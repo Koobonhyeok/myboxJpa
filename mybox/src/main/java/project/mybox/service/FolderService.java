@@ -74,6 +74,7 @@ public class FolderService {
     public Map<String, Object> getFolderList(FolderDto folderDto){
         Map<String, Object> pMap = new HashMap<>();
         try{
+            System.out.println("folderDto.getFolderId     :::    "+folderDto.getFolderId() );
             Folder folder = folderRepository.getFolderList( folderDto.getFolderId() ).orElseThrow(
                     ()-> new NoResultException() );
 
@@ -96,7 +97,13 @@ public class FolderService {
                 FileUtils.cleanDirectory(file);
                 if(file.delete()){
 
-                    //
+                    // 폴더를 삭제할때 나중에 파일도 확인해서 같이 삭제
+                    //폴더 삭제
+                    Folder folder = folderRepository.findFolder( folderDto.getFolderId() );
+                    folderRepository.folderRemove(folder);
+
+                    pMap.put("status", "Success");
+                    pMap.put("msg", "Folder remove");
                 }
             }
 

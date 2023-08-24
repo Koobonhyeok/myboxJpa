@@ -35,6 +35,7 @@ public class FolderRepository {
             folder = Optional.ofNullable(
                     em.createQuery( "SELECT f FROM Folder f " +
                                     "LEFT JOIN FETCH f.childrenFolders " +
+//                                    "LEFT JOIN FETCH f.childrenFiles " +
                                     "WHERE f.folderId = :folderId ", Folder.class)
                             .setParameter("folderId", folderId)
                             .getSingleResult());
@@ -53,13 +54,13 @@ public class FolderRepository {
         em.persist(folder);
     }
 
-    public void folderRemove(Long folderId){
-        Folder folder = em.createQuery("select m from Folder m where folder_id = :folderId", Folder.class)
-                .setParameter("folderId", folderId).getSingleResult();
+    public void folderRemove( Folder folder ){
+//        Folder folder = em.createQuery("select m from Folder m where folder_id = :folderId", Folder.class)
+//                .setParameter("folderId", folderId).getSingleResult();
         em.remove(folder);
     }
 
-    public Folder findFolder(String folderId ){
+    public Folder findFolder( Long folderId ){
         return em.createQuery("select m from Folder m where folder_id = :folderId", Folder.class)
                 .setParameter("folderId", folderId)
                 .getSingleResult();

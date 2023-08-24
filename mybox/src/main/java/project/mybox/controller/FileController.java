@@ -21,23 +21,32 @@ public class FileController {
 
     public final FileService fileService;
 
-    @GetMapping("/fileRegForm")
-    public ResponseEntity<?> fileRegForm(@RequestPart(value = "file", required = false) MultipartFile multipartFile,
-                                         HttpServletRequest request){
-        Map<String, Object> pMap = fileService.fileRegForm(multipartFile, request);
-        return new ResponseEntity<>(pMap, HttpStatus.OK);
+    @GetMapping("/fileReg")
+    public ResponseEntity<?> fileReg( @RequestPart(value = "file", required = false) MultipartFile multipartFile,
+                                         HttpServletRequest request  ){
+        System.out.println(" 들어옴 ");
+        Map<String, Object> pMap = fileService.fileReg(multipartFile, request);
+        return ResponseEntity.status(HttpStatus.OK).body(pMap);
     }
 
-    @GetMapping("/fileRemove")
-    public ResponseEntity<?> fileRemove( @ModelAttribute FileDto fileDto, HttpServletRequest request ){
-        Map<String, Object> pMap = fileService.fileRemove( fileDto, request );
-        return new ResponseEntity<>(pMap, HttpStatus.OK);
-    }
 
-    @GetMapping("/fileDownload")
-    public ResponseEntity<?> fileDownload(HttpServletRequest request, HttpServletResponse response ){
-        Map<String, Object> pMap = fileService.fileDownload(request, response);
-        return new ResponseEntity<>(pMap, HttpStatus.OK);
-    }
+//    @GetMapping("/fileRegForm")
+//    public ResponseEntity<?> fileRegForm(@RequestPart(value = "file", required = false) MultipartFile multipartFile,
+//                                         HttpServletRequest request){
+//        Map<String, Object> pMap = fileService.fileRegForm(multipartFile, request);
+//        return new ResponseEntity<>(pMap, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/fileRemove")
+//    public ResponseEntity<?> fileRemove( @ModelAttribute FileDto fileDto, HttpServletRequest request ){
+//        Map<String, Object> pMap = fileService.fileRemove( fileDto, request );
+//        return new ResponseEntity<>(pMap, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/fileDownload")
+//    public ResponseEntity<?> fileDownload(HttpServletRequest request, HttpServletResponse response ){
+//        Map<String, Object> pMap = fileService.fileDownload(request, response);
+//        return new ResponseEntity<>(pMap, HttpStatus.OK);
+//    }
 
 }

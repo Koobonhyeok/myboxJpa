@@ -20,7 +20,6 @@ public class FolderController {
 
     @GetMapping("/folderReg")
     public ResponseEntity<?> folderReg( @ModelAttribute FolderDto folderDto ){
-        System.out.println(" FolderDto    ::    " + folderDto.toString());
         Map<String, Object> pMap = folderService.folderReg(folderDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(pMap);

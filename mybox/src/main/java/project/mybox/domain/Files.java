@@ -2,11 +2,12 @@ package project.mybox.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-//@Entity
+@Entity
 @Getter
 @Table(name = "file")
 public class Files {
@@ -24,6 +25,7 @@ public class Files {
     @Column( name = "file_storage")
     private Long fileStorage;
 
+    @CreationTimestamp
     @Column(name = "reg_dttm")
     private LocalDateTime regDttm;
 

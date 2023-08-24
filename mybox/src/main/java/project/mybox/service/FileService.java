@@ -39,6 +39,39 @@ public class FileService {
     private JwtTokenProvider jwtTokenProvider;
 
     @Transactional
+    public Map<String, Object> fileReg(MultipartFile multipartFile, HttpServletRequest request){
+        Map<String, Object> pMap = new HashMap<>();
+        try {
+            String originalFileName = multipartFile.getOriginalFilename();
+//            if( common.validation("", originalFileName) ){
+                Folder folder = Folder.builder()
+                        .folderId(Long.parseLong(request.getParameter("folderId").toString()))
+                        .build();
+
+                Files file_info =  Files.builder()
+                        .fileName(originalFileName.substring(0, originalFileName.lastIndexOf('.')))
+                        .fileStorage(multipartFile.getSize())
+                        .fileExt(originalFileName.substring(originalFileName.lastIndexOf('.')+1))
+                        .folder(folder)
+                        .regDttm(LocalDateTime.now())
+                        .build();
+
+                fileRepository.fileRegForm(file_info);
+                pMap.put("status", "Success");
+                pMap.put("msg", "File make success");
+//            }
+
+
+        }catch (Exception e){
+            pMap.put("status", "Fail");
+            pMap.put("msg", "Exception");
+        }
+
+
+        return pMap;
+    }
+
+    @Transactional
     public Map<String, Object> fileRegForm(MultipartFile multipartFile, HttpServletRequest request){
         Map<String, Object> pMap = new HashMap<>();
         try {
